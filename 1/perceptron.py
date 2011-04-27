@@ -1,9 +1,10 @@
 import random
+from termcolor import colored
+
 debug = True
 # the multi layer perceptron class
 class MultiLayerPerceptron:
 
-   
    def __init__(self, layers, threshold = 0):
       """ initialize a new network
       
@@ -18,7 +19,7 @@ class MultiLayerPerceptron:
       input_layer = layers[0]
       inputs = 1
       if isinstance(input_layer , int):
-         print "appending ", input_layer , " neurons to input layer "
+         print colored("appending {0} neurons to input layer", "green").format(input_layer)
          self.layers.append([])
          for x in range(input_layer ):
             self.layers[0].append(Neuron(inputs, self.threshold, 0))
@@ -27,12 +28,12 @@ class MultiLayerPerceptron:
       inputs = len(self.layers[0])
       for (layer_number, layer) in enumerate(layers[1:]):
          if isinstance(layer, int):
-            print "appending " + str(layer) + " neurons to layer " + str(layer_number+1)
+            print colored("appending {0} neurons to layer {1}".format(layer, layer_number+1), "green")
             self.layers.append([])
             for x in range(layer):
                self.layers[-1].append(Neuron(inputs, self.threshold))
             inputs = layer
-         
+
    def assignInput(self, input_values = None):
       """ assign input values, potentially usefull only for input layer """
       for input_neuron in self.layers[0]:
