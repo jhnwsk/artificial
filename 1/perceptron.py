@@ -1,7 +1,7 @@
 import random
 from termcolor import colored
 
-debug = True
+DEBUG = True
 # the multi layer perceptron class
 class MultiLayerPerceptron:
 
@@ -40,7 +40,7 @@ class MultiLayerPerceptron:
          input_neuron.assignInput([random.randint(1, 10)])
          
       # just for tests
-      if debug:
+      if DEBUG:
          for input_neuron in self.layers[0]:
             input_neuron.output()
       
@@ -55,7 +55,7 @@ class MultiLayerPerceptron:
          self.outputs = []
          self.outputs.extend(neuron.output(inputs) for neuron in layer)
          inputs = self.outputs
-         if debug: print "layer {0} output = {1} \n".format(index, self.outputs)
+         if DEBUG: print "layer {0} output = {1} \n".format(index, self.outputs)
          
       return self.outputs
       
@@ -99,9 +99,9 @@ class Neuron:
          # Set all the weights and threshold levels of the network to random numbers uniformly distributed inside a small range (Haykin, 1999):
          # meaning only one random number / number of inputs
          w = random.uniform(-0.5, 0.5)
-         w = w / inputs
+         w = round(w / float(inputs), 2)
       else:
-         w = weight / inputs
+         w = round(weight / float(inputs), 2)
        
       for x in range(inputs):
          self.weights.append(w)
@@ -113,7 +113,7 @@ class Neuron:
       """ lineary combine the neurons input """
       x = sum(int(value) * float(self.weights[index]) for (index, value) in enumerate(inputs))
       x -= self.threshold
-      if debug: print "activation x = " + str(x) + ", threshold: " + str(self.threshold) + ", weight: " + str(self.weights)
+      if DEBUG: print "activation x = " + str(x) + ", threshold: " + str(self.threshold) + ", weight: " + str(self.weights)
       return x
    
    def output(self, inputs = None):
