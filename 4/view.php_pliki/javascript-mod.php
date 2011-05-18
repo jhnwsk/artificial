@@ -1,1 +1,0 @@
-// Javascript from Moodle modules
