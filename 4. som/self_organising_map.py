@@ -22,8 +22,10 @@ def output(value, color = None):
 #########################################################################################################
 
 class SelfOrganisingMap:
+   
+   dimensions = []
 
-   def __init__(self, input_vector, kohonen_neurons, learning_rate = None):
+   def __init__(self, dimensions, input_vector_length, kohonen_neurons = None, learning_rate = None):
       """
       Initializes SOM with learning_rate
       """
@@ -38,28 +40,30 @@ class SelfOrganisingMap:
 
       self.kohonen_neurons = []
 
-      self.input_vector = input_vector
-      print colored("input vector {0}", "blue").format(self.input_vector)
-
       # or if you supplied a tuple with weights
-      if isinstance(kohonen_neurons, (int, long)):
-         for k_n in range(kohonen_neurons):
-            self.kohonen_neurons.append(Neuron(len(input_vector)))
-      # you could've supplied just a number of neurons
-      else:
+      if kohonen_neurons != None and isinstance(kohonen_neurons, (list, tuple)):
          try:
             for k_n in kohonen_neurons:
-               self.kohonen_neurons.append(Neuron(k_n))
+               self.kohonen_neurons.append(Neuron(dimensions, k_n))
          except:
             print colored("invalid kohonen_neurons variable {} supplied!", "red").format(kohonen_neurons)
 
-   def activate(self):
+      # you could've supplied just a number of neurons
+      else:
+          for k_n in range(input_vector_length):
+            self.kohonen_neurons.append(Neuron(dimensions))
+
+   def activate(self, input_vector):
       """
       activates SOM
       """
+
+      self.input_vector = input_vector
+      print colored("input vector {0}", "blue").format(self.input_vector)
+
       euclidean = {} 
       for kv in self.kohonen_neurons:
-         euclidean[kv.euclideanDistance(self.input_vector)] = kv
+         euclidean[kv.euclidean_distance(self.input_vector)] = kv
 
       win = min(euclidean.keys());
 
@@ -67,6 +71,11 @@ class SelfOrganisingMap:
 
       winner = euclidean[win]
       winner.learn(self.learning_rate, self.input_vector)
+
+   def weight_vectors(self):
+      result = [kn.weight for kn in self.kohonen_neurons]
+      return result
+         
 
 #########################################################################################################
 
@@ -81,14 +90,14 @@ class Neuron:
       self.weight = []
 
       if weight == None:
-         for d in range(dimension):
-            self.weight.append(random.uniform(0, 1))
+         for d in dimension:
+            self.weight.append(random.uniform(0, d))
       else:
          self.weight = weight
 
       print colored("neuron weight vector : {0}", "blue").format(self.weight)
 
-   def euclideanDistance(self, vector):
+   def euclidean_distance(self, vector):
       """
       calculates the euclidian distance between vector and the weight vector of the neuron
       """
@@ -131,13 +140,4 @@ class SOMError(Exception):
    def __str__(self):
       return repr(self.value)
 
-# the 'main' routine 
-if __name__ == "__main__":
-   input_neuron = [0.1, 0.1]
-   kohonen_neurons = [[0.5, 0.5], [0.2, 0.3]]
-
-   som = SelfOrganisingMap(input_neuron, 4, 0.1)
-
-   for i in range(100):
-      som.activate()
 
