@@ -23,13 +23,15 @@ def output(value, color = None):
 
 class SelfOrganisingMap:
    
-   dimensions = []
+   
 
    def __init__(self, dimensions, input_vector_length, kohonen_neurons = None, learning_rate = None):
       """
       Initializes SOM with learning_rate
       """
       print colored("initializing SOM", "green");
+
+      self.dimensions = dimensions
 
       if learning_rate == None:
          self.learning_rate = random.uniform(0.01, 0.2)
@@ -51,14 +53,15 @@ class SelfOrganisingMap:
       # you could've supplied just a number of neurons
       else:
           for k_n in range(input_vector_length):
-            self.kohonen_neurons.append(Neuron(dimensions))
+            self.kohonen_neurons.append(Neuron(len(dimensions)))
 
    def activate(self, input_vector):
       """
       activates SOM
       """
 
-      self.input_vector = input_vector
+      # normalize the input vector
+      self.input_vector = [iv / float(self.dimensions[i]) for i, iv in enumerate(input_vector)]
       print colored("input vector {0}", "blue").format(self.input_vector)
 
       euclidean = {} 
@@ -90,8 +93,8 @@ class Neuron:
       self.weight = []
 
       if weight == None:
-         for d in dimension:
-            self.weight.append(random.uniform(0, d))
+         for d in range(dimension):
+            self.weight.append(random.uniform(0, 1))
       else:
          self.weight = weight
 

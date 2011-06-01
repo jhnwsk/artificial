@@ -9,8 +9,8 @@ if __name__ == "__main__":
    input_vectors = [[750, 599], [100, 100], [500, 500], [250, 250], [300, 10]]
    som = SelfOrganisingMap(dimensions, len(input_vectors))
  
-   for iv in input_vectors:
-      for i in range(1000):
+   for i in range(1):
+      for iv in input_vectors:
          som.activate(iv)
 
    self_organised_points = som.weight_vectors()
