@@ -22,14 +22,12 @@ def output(value, color = None):
 #########################################################################################################
 
 class SelfOrganisingMap:
-   
-   
 
    def __init__(self, dimensions, input_vector_length, kohonen_neurons = None, learning_rate = None):
       """
       Initializes SOM with learning_rate
       """
-      print colored("initializing SOM", "green");
+      output("initializing SOM", "green")
 
       self.dimensions = dimensions
 
@@ -38,15 +36,14 @@ class SelfOrganisingMap:
       else:
          self.learning_rate = learning_rate
      
-      print colored("learning rate {0}", "green").format(self.learning_rate)
+      output("learning rate {0}".format(self.learning_rate), "green")
 
       self.kohonen_neurons = []
 
       # or if you supplied a tuple with weights
       if kohonen_neurons != None and isinstance(kohonen_neurons, (list, tuple)):
          try:
-            for k_n in kohonen_neurons:
-               self.kohonen_neurons.append(Neuron(dimensions, k_n))
+            self.kohonen_neurons = [Neuron(dimensions, k_n) for k_n in kohonen_neurons]
          except:
             print colored("invalid kohonen_neurons variable {} supplied!", "red").format(kohonen_neurons)
 
