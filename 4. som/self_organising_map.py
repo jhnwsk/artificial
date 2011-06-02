@@ -1,5 +1,6 @@
 import random
 import math
+from itertools import imap
 from termcolor import colored
 
 DEBUG = True
@@ -73,7 +74,8 @@ class SelfOrganisingMap:
       winner.learn(self.learning_rate, self.input_vector)
 
    def weight_vectors(self):
-      result = [kn.weight for kn in self.kohonen_neurons]
+      result = [map(lambda w, dim: w * dim, kn.weight, self.dimensions) for kn in self.kohonen_neurons]
+      log("map {0}".format(result))
       return result
          
 
