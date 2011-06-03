@@ -4,6 +4,7 @@
 !_TAG_PROGRAM_NAME	Exuberant Ctags	//
 !_TAG_PROGRAM_URL	http://ctags.sourceforge.net	/official site/
 !_TAG_PROGRAM_VERSION	5.8	//
+<<<<<<< HEAD
 DEBUG	4. som/self_organising_map.py	/^DEBUG = True$/;"	v
 Neuron	4. som/self_organising_map.py	/^class Neuron:$/;"	c
 SOMError	4. som/self_organising_map.py	/^class SOMError(Exception):$/;"	c
@@ -29,3 +30,5 @@ self_organised_points	4. som/kohonen_voronoi.py	/^   self_organised_points = som
 som	4. som/kohonen_voronoi.py	/^   som = SelfOrganisingMap(dimensions, len(input_vectors))$/;"	v
 voronoi	4. som/kohonen_voronoi.py	/^   voronoi = Voronoi(dimensions)$/;"	v
 weight_vectors	4. som/self_organising_map.py	/^   def weight_vectors(self):$/;"	m	class:SelfOrganisingMap
+=======
+>>>>>>> 263de4e7d0a3625c3073e8b58beac53eec383847

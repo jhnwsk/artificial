@@ -5,13 +5,11 @@ import math
 import Image
 
 class Voronoi:
-   imgx = 800
-   imgy = 600
-   image = Image.new("RGB", (imgx, imgy))
 
    def __init__(self, dimensions):
       self.imgx = dimensions[0]
       self.imgy = dimensions[1]
+      self.image = Image.new("RGB", (self.imgx, self.imgy))
 
    def drawMosaic(self, points = None):
       n = 0

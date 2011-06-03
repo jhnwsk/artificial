@@ -1,36 +1,18 @@
 import random
 import math
-from itertools import imap
-from termcolor import colored
-
-DEBUG = True
-
-def log(value, color = None):
-   """
-   output only if DEBUG
-   """
-   if color == None: color = "cyan"
-   if DEBUG:
-      print colored(value, color)
-
-def output(value, color = None):
-   """
-   output always
-   """
-   if color == None: color = "cyan"
-   print colored(value, color)
+from tools import Logger
 
 #########################################################################################################
 
-class SelfOrganisingMap:
-   
-   
+class SelfOrganisingMap(Logger):
 
-   def __init__(self, dimensions, input_vector_length, kohonen_neurons = None, learning_rate = None):
+   debug = False
+
+   def __init__(self, dimensions, kohonen_neurons = None, learning_rate = None, min_euclidean_distance = None):
       """
       Initializes SOM with learning_rate
       """
-      print colored("initializing SOM", "green");
+      self.output("initializing SOM", "green")
 
       self.dimensions = dimensions
 
@@ -38,59 +20,79 @@ class SelfOrganisingMap:
          self.learning_rate = random.uniform(0.01, 0.2)
       else:
          self.learning_rate = learning_rate
+
+      self.output("learning rate {0}".format(self.learning_rate), "green")
+
+      if min_euclidean_distance == None:
+         self.min_euclidean_distance = random.uniform(0.01, 0.1)
+      else:
+         self.min_euclidean_distance = min_euclidean_distance
      
-      print colored("learning rate {0}", "green").format(self.learning_rate)
+      self.output("min euclidean distance {0}".format(self.min_euclidean_distance), "green")
 
       self.kohonen_neurons = []
 
       # or if you supplied a tuple with weights
       if kohonen_neurons != None and isinstance(kohonen_neurons, (list, tuple)):
          try:
-            for k_n in kohonen_neurons:
-               self.kohonen_neurons.append(Neuron(dimensions, k_n))
+            self.kohonen_neurons = [Neuron(dimensions, k_n) for k_n in kohonen_neurons]
          except:
-            print colored("invalid kohonen_neurons variable {} supplied!", "red").format(kohonen_neurons)
+            self.output("invalid kohonen_neurons variable {0} supplied!".format(kohonen_neurons), "red")
 
       # you could've supplied just a number of neurons
-      else:
-          for k_n in range(input_vector_length):
+      elif kohonen_neurons != None and isinstance(kohonen_neurons, (long, int)):
+          for k_n in range(kohonen_neurons):
             self.kohonen_neurons.append(Neuron(len(dimensions)))
 
    def activate(self, input_vector):
       """
-      activates SOM
+      activates SOM with input_vector
       """
-
       # normalize the input vector
       self.input_vector = [iv / float(self.dimensions[i]) for i, iv in enumerate(input_vector)]
-      print colored("input vector {0}", "blue").format(self.input_vector)
+      self.log("input vector {0}".format(self.input_vector), "blue")
 
-      euclidean = {} 
-      for kv in self.kohonen_neurons:
-         euclidean[kv.euclidean_distance(self.input_vector)] = kv
+      # dictionary comprehensions available in python 2.7 and 3+
+      # euclidean = {kn.euclidean_distance(self.input_vector) : kn for kn in self.kohonen_neurons}
 
+      # generate euclidean dictionary of neurons keyed by their distances
+      euclidean = dict((kn.euclidean_distance(self.input_vector), kn) for kn in self.kohonen_neurons)
+      
       win = min(euclidean.keys());
 
-      log("and the winner is: {0}".format(win))
+      self.log("and the winner is: {0}".format(win))
 
-      winner = euclidean[win]
+      # pop the winner for later gaussian learning
+      winner = euclidean.pop(win)
+      
+      # activate according to neighborhood function
+      if math.fabs(win) > self.min_euclidean_distance:
+         for neuron in euclidean.values():
+            neuron.learn(neuron.gaussian_neighborhood(self.learning_rate, winner.weight, win), self.input_vector)
+
+      # winner learns last
+      self.log("winner learns")
       winner.learn(self.learning_rate, self.input_vector)
+
+      self.output("neurons after epoch {0}".format([str(kn) for kn in self.kohonen_neurons]))
 
    def weight_vectors(self):
       result = [map(lambda w, dim: w * dim, kn.weight, self.dimensions) for kn in self.kohonen_neurons]
-      log("map {0}".format(result))
+      self.log("map {0}".format(result))
       return result
          
 
 #########################################################################################################
 
-class Neuron:
+class Neuron(Logger):
 
+   debug = False
+   
    def __init__(self, dimension, weight = None):
       """
       Initializes a new neuron with weight vector
       """
-      print colored("initializing neuron", "green");
+      self.output("initializing neuron", "green");
 
       self.weight = []
 
@@ -100,7 +102,7 @@ class Neuron:
       else:
          self.weight = weight
 
-      print colored("neuron weight vector : {0}", "blue").format(self.weight)
+      self.log("neuron weight vector : {0}".format(self.weight), "blue")
 
    def euclidean_distance(self, vector):
       """
@@ -113,12 +115,30 @@ class Neuron:
       for i, xi in enumerate(vector):
          result = result + (xi - self.weight[i])**2
       
-      log("euclidean before sqrt = {0}".format(result), "cyan")
+      self.log("euclidean before sqrt = {0}".format(result), "cyan")
 
       result = math.sqrt(result)
       
-      log("euclidean = {0}".format(result), "cyan") 
+      self.log("euclidean = {0}".format(result), "cyan") 
       
+      return result
+   
+   def gaussian_neighborhood(self, unity, winner, learning_radius):
+      """
+      f(x) = unity * e^(-(x - winner)^2 / (2 * learning_radius^2))
+      calculates the gaussian neighborhood function from winner with peak in unity and width of learning radius
+
+      the length of the winner tuple is used as dimensions for the function
+      """
+      # TODO - how to augment learning radius over time? 
+      # initial idea - euclidean distance of winner from input vector - sucks! ;)
+
+      dividends = map(lambda x, b: -(x - b)**2, self.weight, winner)
+      self.log("dividends {0}".format(dividends))
+      divisor = 2 * learning_radius**2
+      self.log("divisor {0}".format(divisor))
+      result = [unity * math.exp(div/divisor) for div in dividends]
+      self.log("gaussian neighborhood {0}".format(result))
       return result
 
    def learn(self, learning_rate, vector):
@@ -127,21 +147,33 @@ class Neuron:
       """
       if(len(vector) != len(self.weight)):
          raise SOMError("input {0} and weight {1} vector dimension mismatch".format(len(vector), len(self.weight))) 
+     
+      self.log("neuron learns at rate {0} with input {1}".format(learning_rate, vector))
+
+      # winner learns with global learning rate
+      if isinstance(learning_rate, (int, float)):
+         delta_weight = [learning_rate * (xi - self.weight[i]) for i, xi in enumerate(vector)]
+      # looser learn with individual learning rates in each dimension
+      elif isinstance(learning_rate, (list, tuple)):
+         adjusted_weights = [(xi - self.weight[i]) for i, xi in enumerate(vector)]
+         self.log("adjusted weights = {0}".format(adjusted_weights))
+         delta_weight = map(lambda lr, aw: lr * aw, learning_rate, adjusted_weights)
       
-      delta_weight = [learning_rate * (xi - self.weight[i]) for i, xi in enumerate(vector)]
-      
-      log("delta weights = {0}".format(delta_weight), "magenta")
+      self.log("delta weights = {0}".format(delta_weight))
 
       self.weight = [wi + delta_weight[i] for i, wi in enumerate(self.weight)]
          
-      log("weights after learning = {0}".format(self.weight), "magenta")
+      self.log("weights after learning = {0}".format(self.weight))
+
+   def __str__(self):
+      return str(self.weight)
 
 
 #########################################################################################################
 
 class SOMError(Exception):
    def __init__(self, value):
-      self.value = value
+         self.value = value
    def __str__(self):
       return repr(self.value)
 
