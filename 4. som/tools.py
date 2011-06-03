@@ -13,16 +13,19 @@ class Logger:
       """
       output only if DEBUG
       """
-      if color == None: color = "cyan"
+      if color == None: msg = value
+      else: msg = colored(value, color)
       if cls.debug:
-         print colored(value, color)
+         print msg
+
    @classmethod
    def output(cls, value, color = None):
       """
       output always
       """
-      if color == None: color = "cyan"
-      print colored(value, color)
+      if color == None: msg = value
+      else: msg = colored(value, color)
+      print msg
 
 class SpacialGenerator:
    """
@@ -31,7 +34,7 @@ class SpacialGenerator:
    @classmethod
    def line(cls, a, b, dimensions = [1,1]):
       """
-      returns points on line defined by f(x) = ax + b
+      returns random points on line defined by f(x) = ax + b
       """
       x = random.uniform(0, dimensions[0])
       y = a * x + b
@@ -50,15 +53,21 @@ class SpacialGenerator:
       return result
 
    @classmethod
-   def circle(cls, full = False):
+   def circle(cls, center, radius, dimensions = [1,1], full = False):
+      """
+      returns random points in circle with center and radius
+      circle can optionally be full
+      """
+
+
       pass
    
    @classmethod
-   def triangle(cls):
+   def triangle(cls, a, b, c):
       pass
 
    @classmethod
-   def rectangle(cls):
+   def rectangle(cls, a, b, c, d):
       pass
 
    @classmethod
