@@ -6,7 +6,7 @@ class Logger:
    logs messages to user
    """
 
-   debug = True
+   debug = False
 
    @classmethod
    def log(cls, value, color = None):

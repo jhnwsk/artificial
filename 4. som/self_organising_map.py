@@ -8,26 +8,21 @@ class SelfOrganisingMap(Logger):
 
    debug = False
 
-   def __init__(self, dimensions, kohonen_neurons = None, learning_rate = None, min_euclidean_distance = None):
+   def __init__(self, dimensions, kohonen_neurons,
+         learning_rate = random.uniform(0.01, 0.2), 
+         min_euclidean_distance = random.uniform(0.01, 0.1)):
       """
-      Initializes SOM with learning_rate
+      Initializes SOM which can scale input vectors from dimensions space two a uniform space and kohonen_neurons number of neurons
+      learning rate is optional
+      min_euclidean_distance is the euclidean distance at which the winner neuron will no longer be activated
       """
       self.output("initializing SOM", "green")
 
       self.dimensions = dimensions
-
-      if learning_rate == None:
-         self.learning_rate = random.uniform(0.01, 0.2)
-      else:
-         self.learning_rate = learning_rate
-
+      self.learning_rate = learning_rate
       self.output("learning rate {0}".format(self.learning_rate), "green")
-
-      if min_euclidean_distance == None:
-         self.min_euclidean_distance = random.uniform(0.01, 0.1)
-      else:
-         self.min_euclidean_distance = min_euclidean_distance
-     
+      
+      self.min_euclidean_distance = min_euclidean_distance
       self.output("min euclidean distance {0}".format(self.min_euclidean_distance), "green")
 
       self.kohonen_neurons = []
@@ -44,7 +39,7 @@ class SelfOrganisingMap(Logger):
           for k_n in range(kohonen_neurons):
             self.kohonen_neurons.append(Neuron(len(dimensions)))
 
-   def activate(self, input_vector):
+   def activate(self, input_vector, epoch):
       """
       activates SOM with input_vector
       """
@@ -68,19 +63,34 @@ class SelfOrganisingMap(Logger):
       # activate according to neighborhood function
       if math.fabs(win) > self.min_euclidean_distance:
          for neuron in euclidean.values():
-            neuron.learn(neuron.gaussian_neighborhood(self.learning_rate, winner.weight, win), self.input_vector)
-
-      # winner learns last
-      self.log("winner learns")
-      winner.learn(self.learning_rate, self.input_vector)
+            neuron.learn(neuron.gaussian_neighborhood(self.learning_rate, winner.weight, self.calculate_learning_radius(epoch)), self.input_vector)
+         # winner learns last
+         self.log("winner learns")
+         winner.learn(self.learning_rate, self.input_vector)
 
       self.output("neurons after epoch {0}".format([str(kn) for kn in self.kohonen_neurons]))
 
    def weight_vectors(self):
+      """
+      returns the weight vectors of all neurons in the network
+      """
       result = [map(lambda w, dim: w * dim, kn.weight, self.dimensions) for kn in self.kohonen_neurons]
       self.log("map {0}".format(result))
       return result
-         
+   
+   def calculate_learning_radius(self, epoch):
+      """
+      calculates the learning_radius decreasing over time
+      """
+      time_constant = 1
+      initial_learning_radius = 0.1
+      minimal_learning_radius = 0.0001
+      result = initial_learning_radius * math.exp(-epoch/time_constant)
+
+      if result < minimal_learning_radius: result = minimal_learning_radius
+      self.log("shrunk learning radius: {0}".format(result))
+
+      return result
 
 #########################################################################################################
 
@@ -132,11 +142,14 @@ class Neuron(Logger):
       """
       # TODO - how to augment learning radius over time? 
       # initial idea - euclidean distance of winner from input vector - sucks! ;)
+      # idea from "Neural Networks a comprehensive foundation" in learning_radius method
 
       dividends = map(lambda x, b: -(x - b)**2, self.weight, winner)
       self.log("dividends {0}".format(dividends))
+
       divisor = 2 * learning_radius**2
       self.log("divisor {0}".format(divisor))
+
       result = [unity * math.exp(div/divisor) for div in dividends]
       self.log("gaussian neighborhood {0}".format(result))
       return result
@@ -167,7 +180,6 @@ class Neuron(Logger):
 
    def __str__(self):
       return str(self.weight)
-
 
 #########################################################################################################
 
