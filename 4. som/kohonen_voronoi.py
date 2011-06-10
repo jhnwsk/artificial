@@ -4,15 +4,15 @@ from tools import SpacialGenerator, Logger
 
 # the 'main' routine 
 if __name__ == "__main__":
-   
+
    # voronoi
-   dimensions = [600, 600]
+   dimensions = [800, 600]
    # old tests with set of input vectors 
    # input_vectors = [[100, 100], [700, 100], [100, 500], [700, 500]]
 
-   som = SelfOrganisingMap(dimensions, 10, 0.1, 0.01)
+   som = SelfOrganisingMap(dimensions, 100, 0.1, 0.01)
  
-   for i in range(100000):
+   for i in range(10000):
       point = SpacialGenerator.line(1, 0, dimensions)
       som.activate(point, i)
 

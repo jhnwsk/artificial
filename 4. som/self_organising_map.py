@@ -63,12 +63,15 @@ class SelfOrganisingMap(Logger):
       # activate according to neighborhood function
       if math.fabs(win) > self.min_euclidean_distance:
          for neuron in euclidean.values():
-            neuron.learn(neuron.gaussian_neighborhood(self.learning_rate, winner.weight, self.calculate_learning_radius(epoch)), self.input_vector)
+            neuron.learn(neuron.gaussian_neighborhood(self.learning_rate, winner.weight, self.shrink_learning_radius(epoch)), self.input_vector)
          # winner learns last
          self.log("winner learns")
          winner.learn(self.learning_rate, self.input_vector)
 
       self.output("neurons after epoch {0}".format([str(kn) for kn in self.kohonen_neurons]))
+
+      # the learning rate should shrink over time
+      self.shrink_learning_rate(epoch)
 
    def weight_vectors(self):
       """
@@ -78,17 +81,25 @@ class SelfOrganisingMap(Logger):
       self.log("map {0}".format(result))
       return result
    
-   def calculate_learning_radius(self, epoch):
+   def shrink_learning_radius(self, epoch, time_constant = 1, initial_learning_radius = 0.1, minimal_learning_radius = 0.0001):
       """
-      calculates the learning_radius decreasing over time
+      calculates the learning_radius decreasing over epoch's by time constant from initial_learning_radius  to minimal_learning_radius values
       """
-      time_constant = 1
-      initial_learning_radius = 0.1
-      minimal_learning_radius = 0.0001
       result = initial_learning_radius * math.exp(-epoch/time_constant)
 
       if result < minimal_learning_radius: result = minimal_learning_radius
       self.log("shrunk learning radius: {0}".format(result))
+
+      return result
+
+   def shrink_learning_rate(self, epoch, time_constant = 1, minimal_learning_rate = 0.001):
+      """
+      shrinks the self.learning_rate over epoch's using time_constant
+      """
+      result = self.learning_rate * math.exp(-epoch/time_constant)
+
+      if result < minimal_learning_rate: result = minimal_learning_rate
+      self.log("shrunk learning rate: {0}".format(result))
 
       return result
 
