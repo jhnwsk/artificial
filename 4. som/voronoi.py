@@ -22,8 +22,8 @@ class Voronoi:
       if points == None:
          n = random.randint(50, 100) # of cells
          for i in range(n):
-            nx.append(random.randint(0, imgx - 1))
-            ny.append(random.randint(0, imgy - 1))
+            nx.append(random.randint(0, self.imgx - 1))
+            ny.append(random.randint(0, self.imgy - 1))
             nr.append(random.randint(0, 255))
             ng.append(random.randint(0, 255))
             nb.append(random.randint(0, 255))
