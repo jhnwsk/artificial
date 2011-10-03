@@ -178,12 +178,12 @@ if __name__ == "__main__":
     hophop.test(simple)
 
     simple=["5","6","7","8","9"]
-    #hophop = HopfieldNet(4)
-    #hophop.learn(simple)
-    #hophop.test(simple)
+    hophop = HopfieldNet(4)
+    hophop.learn(simple)
+    hophop.test(simple)
 
 # z zadania
-    hophop = HopfieldNet(40)
-    hophop.learn(urls)
-    hophop.test(urls)
+#    hophop = HopfieldNet(40)
+ #   hophop.learn(urls)
+  #  hophop.test(urls)
 
