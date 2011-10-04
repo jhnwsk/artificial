@@ -1,0 +1,832 @@
+/**************************************
+ * THEME NAME: wikamp1_2
+ *
+ * Files included in this sheet:
+ *
+ *   wikamp1_2/wikamp.css
+ **************************************/
+
+/***** wikamp1_2/wikamp.css start *****/
+
+/**
+  *  Adds all the nice finish to the standard theme
+  *
+  */
+body {
+background: #efefef;
+font-family:Trebuchet MS;
+font-size: 12px;
+color: #545454;
+margin: 0 auto;
+width:960px;
+line-height: 16px;
+}
+a{
+color:#971e1f;
+text-decoration:none;
+}
+a:hover {
+text-decoration: underline;
+}
+/*********** heder ****************/
+.headermenu {
+height:24px;
+background: #971e1f;
+display:block;
+float:left;
+width:100%;
+font-family:Verdana;
+font-size:10px;
+}
+.headermenu .logininfo{
+color:#fff;
+margin: 2px 16px 0 0;
+}
+.headermenu .logininfo a {
+font-weight:bold;
+color:#fff;
+}
+.topMenu
+{
+display:block;
+float:left;
+width:100%;
+height:53px;
+background: url(pix/bgTopMenu.png) repeat-x 0 0;
+}
+.topMenu ul
+{
+list-style-type:none;
+margin: 2px 0 0 0;
+padding: 0 0 0 2px;
+background: url(pix/bgTMSeparator.png) no-repeat 0 0;
+height:45px;
+float:left;
+display:inline;
+}
+.topMenu ul li
+{
+display:inline;
+float:left;
+height:45px;
+background: url(pix/bgTMSeparator.png) no-repeat right 0;
+padding-right: 2px;
+}
+.topMenu ul li a
+{
+color: #656565;
+display: block;
+font-size: 14px;
+height: 17px;
+padding: 14px 33px;
+text-transform: uppercase;
+}
+.topMenu ul li a:hover
+{
+text-decoration:none;
+color:#660a0a;
+background: url(pix/bgTopActive.png) repeat-x 0 0;
+}
+.topMenu .rightTop
+{
+float: right;
+height: 45px;
+width: 2px;
+margin: 2px 0 0 0;
+background: url(pix/bgRightTop.png) no-repeat 0 0;
+}
+
+#header-home img ,#header img
+{
+display:block;
+float:left;
+border:none;
+}
+.bannerSpace
+{
+display:block;
+float:left;
+width:960px;
+height:197px;
+}
+#benner
+{
+display:block;
+float:left;
+width:960px;
+height:197px;
+}
+.bannerSpace .logo
+{
+display:block;
+float:left;
+margin-left:35px;
+position:absolute;
+z-index:1;
+}
+
+
+/************ middle column*********/
+#layout-table #left-column
+{
+padding-right:30px;
+}
+#layout-table #middle-column {
+    padding-left: 0;
+    padding-right:0;
+}
+ #middle-column {
+margin-top: 63px;
+}
+#header-home
+{
+display:block;
+float:left;
+width:100%;
+}
+#layout-table
+{
+margin-top:20px;
+position:relative;
+float:left;
+}
+#right-column>.wraplevel2 >.bt>div,
+#left-column>.wraplevel2 >.bt>div,
+#middle-column>.wraplevel2 >.bt>div
+{
+display:none;
+}
+#right-column div.i3>div>form>div>input
+{
+display: block;
+margin-bottom: 24px;
+margin-left: 144px;
+margin-top: -62px;
+position: relative;
+}
+body#site-index .headingblock, body#course-view .headingblock {
+border:none;
+text-align:right;
+color: #971e1f;
+font-weight:normal;
+font-size:18px;
+background: url(pix/separator.gif) repeat-x 0 bottom;
+padding-bottom: 11px;
+margin-bottom:0px
+}
+
+.forumpost .topic {
+border-style: none;
+border-width: 0 0 1px;
+padding: 4px 4px 4px 0;
+}
+.forumpost .topic .subject {
+color:#660a0a;
+font-weight:normal;
+font-size:16px;
+text-transform:uppercase;
+}
+.forumpost .topic .author {
+color:#9a9a9a;
+font-size:10px;
+}
+.forumpost .content {
+background: #efefef;
+font-family:Verdana;
+background: url(pix/separator.gif) repeat-x 0 bottom;
+padding: 4px 4px 15px 0;
+text-align: justify;
+}
+.forumheaderlist, .forumpost {
+border-collapse: separate;
+border-style: none;
+}
+.forumolddiscuss {
+text-transform: lowercase;
+margin-top: 6px;
+color:#efefef;
+margin-right: -17px;
+}
+.forumolddiscuss a{
+color:#979797;
+background: url(pix/arrowR.png) no-repeat right 3px;
+padding-right:17px;
+}
+.forumpost .header .picture .day
+{
+background: #971e1f;
+color: #FFFFFF;
+display: block;
+float: left;
+font-size: 36px;
+height: 55px;
+line-height: 56px;
+margin-top: -35px;
+position: relative;
+top: 38px;
+width: 65px;
+}
+.forumpost .header .picture .month
+{
+background: #fff;
+border: 1px solid #E2E2E2;
+color: #971E1F;
+display: block;
+float: left;
+font-size: 10px;
+margin-top: 1px;
+width: 63px;
+position: relative;
+top: 38px;
+font-weight:bold;
+}
+
+.forumpost .left {
+padding: 0 13px 0 0;
+width: 65px;
+}
+#content
+{
+display:block;
+float:left;
+width:100%;
+}
+.breadcrumb .arrow
+{
+background: url(pix/arrowR.png) no-repeat 0 2px;
+color: #FFFFFF;
+    display: inline;
+    float: left;
+    font-size: 0;
+    height: 15px;
+    margin:0 10px;
+    width: 12px;
+}
+.breadcrumb ul li
+{
+display:block;
+float:left;
+}
+.loginbox 
+{
+float:left;
+}
+/*************** right column *************/
+.sideblock div.column.c0 {
+display:none;
+}
+.navbar {
+background: none repeat  0 0 #F7F7F7;
+border: 1px solid #DFDFDF;
+color: #C4C4C4;
+margin-top: 14px;
+min-height: 18px;
+padding: 10px 0 10px 30px;
+}
+#content-i3 .navbar {
+
+}
+
+.navbar a
+{
+color:#c4c4c4;
+}
+.navbar a:hover
+{
+text-decoration:none;
+color:#971e1f;
+}
+
+/************** footer ******************/
+#footer {
+margin-top: 20;
+text-align: left;
+height: 70px;
+display: block;
+float: left;
+background: url(pix/bgFooter.png) repeat-x 0  -70px; 
+color:#979797;
+}
+#footer  a{
+color:#979797;
+}
+#footer  a:hover{
+color:#971e1f;
+text-decoration:none;
+}
+#footer  .lFooter{
+background: url(pix/bgFooter.png) no-repeat 0 0;
+display: block;
+float: left;
+height: 70px;
+position: relative;
+width: 10px;
+}
+#footer  .rFooter{
+background: url(pix/bgFooter.png) no-repeat -11px 0;
+display: block;
+float: right;
+height: 70px;
+position: relative;
+width: 10px;
+}
+#footer  .footerContent{
+display:block;
+float:left;
+width:940px;
+height:70px;
+}
+.footerContent ul
+{
+display: block;
+float: left;
+list-style-type: none;
+margin: 26px 0 0 -2px;
+padding: 0;
+}
+.footerContent ul li
+{
+display:inline;
+
+}
+.footerContent ul li a
+{
+
+padding:0 27px;
+}
+.footerContent .copy
+{
+margin:26px 0 0 0;
+display:inline;
+float:right;
+margin-right:25px;
+}
+
+h3.helpdesk-title {
+    margin-top: 0px;
+}
+
+div.navbutton form.popupform select {
+    width: 180px;
+}
+div.section_add_menus form.popupform select {
+    width: 170px;
+}
+td#left-column form.popupform select,
+td#right-column form.popupform select {
+    width: 140px;
+}
+
+form.popupform>div>select#add_block_jump {
+    width: 160px;
+}
+
+div.mdl-align fieldset.invisiblefieldset {
+    clear:both;
+}
+
+/******** custom corners ************/
+
+.block_adminblock {
+    margin-top: 30px;
+    width:100%;
+}
+div.sideblock div.header {
+    border-style: none;
+    padding: 0;
+}
+div.sideblock h2 {
+font-size:20px;
+color:#fff;
+font-weight:normal;
+margin-left: 25px;
+line-height: 21px;
+}
+div.sideblock {
+margin-bottom:-30px;
+}
+.sideblock .content .head
+{
+margin-top:0;
+}
+.sideblock .header .hide-show-image {
+    float: right;
+    height: 20px;
+    margin-top: 0;
+    width: 20px;
+}
+div.sideblock div.content {
+    background-color: #fff;
+    border-style: none;
+padding: 0 15px 15px 15px;
+}
+div.sideblock div.bt div {
+    background-image: url("pix/boxN01.png");
+    background-position: 0 56px;
+    height: 55px;
+    left: -13px;
+    padding-bottom: 1px;
+    position: relative;
+    width: 13px;
+}
+div.sideblock div.bt {
+    background-color: transparent;
+    background-image: url("pix/boxN.png");
+    background-position: right 56px;
+    height: 37px;
+    margin: 0 -8px 0 9px;
+    padding-bottom: 19px;
+}
+div.sideblock div.header div.bt div {
+  background-image: url(pix/box.png);
+  background-repeat: no-repeat;
+  background-position: 0 0;
+  background-color: transparent;
+  height: 12px;
+  left: -13px;
+  position: relative;
+  width: 13px;
+}
+div.sideblock div.header div.bt {
+  background-image: url(pix/box.png);
+  background-repeat: no-repeat;
+  background-position: 100% 0;
+  margin: 0 -8px 0 9px;
+  height: 12px;
+  background-color: transparent;
+  padding: 0;
+}
+div.sideblock div.header div.i1 {
+background-color: transparent;
+    background-image: url("pix/box_01.png");
+background-position: 0 bottom;
+    background-repeat: repeat-y;
+    margin-left: -4px;
+    padding: 0 0 0 13px;
+}
+div.sideblock div.header div.i2 {
+background-color: transparent;
+    background-image: url("pix/box.png");
+    background-position: right bottom;
+    background-repeat: repeat-y;
+    padding: 0 33px 28px 0;
+}
+div.sideblock div.header div.i3 {
+
+  background-color: #971e1f;
+  border:none;
+}
+div.sideblock div.i1 {
+background-image: url(pix/beige_borders.png);
+background-repeat: repeat-y;
+background-position: 0 0;
+background-color: transparent;
+margin-left: -5px;
+padding: 0 0 0 14px;
+}
+div.sideblock div.i2 {
+	background-image: url(pix/beige_borders.png);
+	background-repeat: repeat-y;
+	background-attachment: scroll;
+	background-position: 100% 0;
+	background-color: transparent;
+	margin-right: -8px;
+	padding: 0 14px 0 0;
+}
+div.sideblock div.i3 {
+  background-color: #f1ece6;
+  padding: 0;
+  border-style: none;
+}
+div.sideblock div.bb div {
+  background-image: url(pix/beige_box.png);
+  background-repeat: no-repeat;
+  background-position: 0 100%;
+  background-color: transparent;
+  height: 21px;
+  left: -18px;
+  position: relative;
+  width: 18px;
+  z-index: -1;
+}
+div.sideblock div.bb {
+  background-image: url(pix/beige_box.png);
+  background-repeat: no-repeat;
+  background-position: 100% 100%;
+  margin: 0 -8px 0 13px;
+  height: 21px;
+  background-color: transparent;
+}
+div.sideblock div.content ul
+{
+list-style-type:none;
+padding-left:0;
+margin-top:0;
+width:100%;
+}
+
+div.sideblock div.content ul li a
+{
+color:#6f6f6f;
+}
+div.sideblock div.content ul li 
+{
+line-height:24px;
+background: url(pix/arrowLi.gif) no-repeat right center;
+margin-right:2px;
+padding-right:10px;
+}
+div.sideblock div.content ul .post
+{
+background-image:none;
+}
+div.sideblock div.content ul li a:hover
+{
+color:#971e1f;
+text-decoration:none;
+}
+#left-column .hidden .header, 
+#right-column .hidden .header {
+border:none;
+}
+#right-column
+{
+    padding-left: 30px;
+}
+
+#footer .validators {
+    display: block;
+    float: left;
+    width: 100%;
+}
+
+.reportlink {
+    margin-top: 15px;
+    text-align: right;
+}
+.paging {
+    clear: both;
+    display: block;
+    float: left;
+    margin: 10px 0;
+    text-align: center;
+    width: 100%;
+}
+h1.main, h2.main, h3.main, h4.main, h5.main, h6.main {
+    text-align: center;
+    width: 100%;
+}
+
+h2.main{
+margin-top: 29px;
+}
+#content-i3 .forumpost
+{
+ display: block;
+float: left;
+width: 100%;
+}
+.navbar .navbutton {
+margin-top: -65px;
+margin-right: 5px;
+position: relative;
+z-index: 101;
+}
+.discussioncontrols
+{
+    clear: both;
+    display: block;
+    float: left;
+    margin-top: 20px;
+    width: 100%;
+}
+.discussioncontrols tr>td+td+td>div {
+    width: 330px;
+}
+#mod-forum-discuss .discussioncontrols td {
+    text-align: right;
+    width: 100%;
+}
+#mod-forum-view .subscription {
+    display: block;
+    float: right;
+    margin: 18px 0;
+    width: 100%;
+}
+.generaltable {
+  border: 1px solid #D5D5D5;
+float: left;
+width:100%;
+border-collapse:collapse;
+}
+.generaltable tbody tr {
+border-collapse:collapse;
+}
+.generaltable tbody .cell {
+border-collapse:collapse;
+  border: 1px solid #D5D5D5;
+  background:#ebebeb;
+}
+
+.forumheaderlist
+{
+border: 1px solid #D5D5D5;
+border-collapse: collapse;
+}
+.forumheaderlist, .forumpost {
+    border-collapse: collapse;
+    border-color: #D5D5D5;
+
+}
+.forumheaderlist thead
+{
+background-color: #f7f7f7;
+color:#545454;
+}
+.forumheaderlist thead th{
+    border: 1px solid #D5D5D5;
+    color: #545454;
+    font-size: 16px;
+    font-weight: normal;
+    padding: 9px 0;
+    text-transform: uppercase;
+}
+.forumheaderlist thead .lastpost{
+text-align:center;
+}
+
+.forumheaderlist thead .author,.forumheaderlist thead .replies,.forumheaderlist .group{
+padding:0 5px;
+}
+.generaltable .header 
+{
+    border: 1px solid #D5D5D5;
+    color: #545454;
+	background-color: #f7f7f7;
+}
+.forumheaderlist tbody td, .generalbox {
+    border: 1px solid #D5D5D5;
+}
+.forumheaderlist tbody .starter{
+padding-left:5px;
+}
+.forumheaderlist tbody .lastpost{
+padding-right:5px;
+}
+.forumheaderlist tbody,.generalbox{
+background:#ebebeb;
+}
+#intro.generalbox {
+    padding-bottom: 15px;
+    width: 98%;
+}
+table
+{
+border-color:#D5D5D5;
+}
+.tabtree {
+    display: block;
+    float: left;
+	position: static;
+    width: 100%;
+}
+.tabrow0 {
+    line-height: 1.8em;
+    list-style: none outside none;
+    margin: 10px 0 0;
+    padding: 0;
+    text-align: center;
+    width: 100%;
+	font-size:100%;
+}
+table.userinfobox {
+margin:0;
+width: 100%;
+}
+table.userinfobox hr, table.topics hr,.signuppanel hr{
+    background: url("pix/separator.gif") repeat 0 1px transparent;
+    color: transparent;
+}
+.loginbox .guestsub, .loginbox .forgotsub {
+	background: url("pix/separator.gif") repeat-x 0 0 transparent;
+	border:none;
+}
+#layout-table .wraplevel2.
+{
+display:block;
+
+}
+    .mform {
+    display: block;
+    float: left;
+    margin: 0 10%;
+    padding: 0;
+    width: 80%;
+}
+body#user-index #showall {
+    display: block;
+    float: left;
+    margin: 10px 0;
+}
+body#user-index table#participants, body#tag-manage table#tag-management-list {
+    margin: auto;
+    width: 100%;
+}
+body#user-index table.controls td.right, body#user-index table.controls td.left {
+    float: left;
+    padding: 4px;
+}
+#calendar {
+    border-collapse: separate;
+    border-spacing: 5px;
+    display: block;
+    float: left;
+    margin-top: 25px;
+    width: 100%;
+}
+#calendar td.sidecalendar .sideblock, #course-view .section td.side, #course-view .section td.content, .coursebox{
+	border-color: #D5D5D5;
+}
+#calendar .maincalendar {
+    border-color: #D5D5D5;
+    height: 100%;
+}
+#calendar .sideblock h2 {
+    text-align: left;
+	color: #545454;
+}
+table.topics
+{
+margin-top:10px;
+}
+.loginbox.twocolumns {
+margin: 30px 0 0;
+width: 100%;
+}
+.loginbox.twocolumns,.loginbox.twocolumns .loginpanel {
+border-color:#D5D5D5;
+}
+
+#notice.generalbox {
+    display: block;
+    float: left;
+    margin-left: 20%;
+    margin-right: auto;
+    margin-top: 30px;
+    width: 60%;
+}
+body#course-category .courseboxes, body#course-index .courseboxes
+{
+padding-left:0;
+padding-right:0;
+}
+.continuebutton {
+    display: block;
+    float: left;
+    text-align: center;
+    width: 100%;
+}
+.user-content
+{
+display:block;
+float:left;
+width:100%;
+}
+.tabrow0 div, .tabrow0 ul {
+    background:none;
+    border-top: 1px solid #AAAAAA;
+    position: absolute;
+}
+.tabrow0 li {
+    position: relative;
+}
+.tabrow0 .tabrow1{
+    display: block;
+    float: left;
+    margin-bottom: 12px;
+    margin-top: -18px;
+    padding-top: 9px;
+    position: relative;
+    width: 100%;
+}
+
+.tabrow1 ul li {
+    display:block;
+	float:left;
+}
+
+#footer-bt,
+#footer-bb,
+#content-bt,
+#header-bb,
+#header-home-bb,
+#header-home-bt,
+#header-bt,
+#intro-bt,
+#intro-bb,
+#header-home-bt,
+#content-bb
+{
+display:none;
+}/***** wikamp1_2/wikamp.css end *****/
+

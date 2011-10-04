@@ -1,20 +1,21 @@
-import math
+import sys, getopt
 from tools import Logger
 
-Logger.debug = True
+Logger.debug = False
 
 # encoding hash
 charset = {
-        "1":[1,1,1],
-        "2":[-1,-1,-1],
-        "3":[1,-1,1],
-        "4":[-1,1,-1],
+        "0":[-1,-1,-1],
+        "1":[1,-1,-1],
+        "2":[-1,1,-1],
+        "3":[1,1,-1],
+        "4":[-1,-1,1],
         
-        "5":[1,1,1,1],
-        "6":[-1,-1,-1,1],
-        "7":[1,-1,1,1],
-        "8":[-1,1,-1,1],
-        "9":[-1,1,-1,-1],
+        "5":[1,-1,1],
+        "6":[-1,1,1],
+        "7":[1,1,1],
+        "8":[-1,-1,-1,1],
+        "9":[1,-1,-1,1],
 
         "_":[-1,-1,-1,-1,-1],
         "/":[1,-1,-1,-1,-1],
@@ -64,32 +65,41 @@ def make_bipolar(url):
     for s in url:
         result.append(charset[s])    
 
-    Logger.log(result)
+    # Logger.log("making bipolar {0}:{1}".format(url,result))
     return result
 
-def unmake_bipolar(bipolar_url):
+def unmake_bipolar(bipolar_url, bits):
     """ converts from bipolar to string format """
+    a = 0
+    b = bits
+    bipolar = []
+    while b <= len(bipolar_url):
+        bipolar.append(bipolar_url[a:b])
+        a+= bits
+        b+=bits
+
+    #Logger.log("unmaking bipolar {0}:bit state {1}".format(bits, bipolar))
+
     result = []
-    for bp in bipolar_url:
+    for bp in bipolar:
         for c in charset:
             if charset[c] == bp:
                 result.append(c)
 
-    Logger.log(result)
+    # Logger.log("unmaking bipolar {0}:{1}".format(bipolar_url, result))
     return result
 
 class HopfieldNet:
     """ the Hopfield network """
 
-    def __init__(self, neurons = 40):
+    def __init__(self, neurons = 40, threshold = -1):
         Logger.output("creating network")
-        self.neurons = [Neuron(i, neurons) for i in range(neurons)]
+        self.neurons = [Neuron(i, neurons, threshold) for i in range(neurons)]
         Logger.output("created network with {0} neurons".format(len(self.neurons)))
-        pass
 
     def _state_vector(self):
         """ network state defined by neurons states """
-        pass
+        return [neuron.state for neuron in self.neurons]
     state_vector = property(_state_vector)
 
     def learn(self, M, epochs=1, learning_rate = .1, forgetting_factor = .01):
@@ -109,7 +119,9 @@ class HopfieldNet:
                 Logger.log("w{0}: {1}".format(i, neuron.weights))
 
     def test(self, fundamental_memories):
+        fundamental_memories.append("abcd.efg")
         for fundamental_memory in fundamental_memories:
+            Logger.log("testing fundamental memory:{0} with state vector:{1}".format(fundamental_memory, self.state_vector))
             corelation = []
             bipolar = make_bipolar(fundamental_memory)    
             flat_memory = [item for sublist in bipolar for item in sublist]
@@ -121,18 +133,51 @@ class HopfieldNet:
                 if x_mi == y_mi:
                     corelation.append(True)
 
+            response = [n.test(flat_memory) for n in self.neurons]
+
+            Logger.log("{0}: {1}".format(fundamental_memory, unmake_bipolar(response, len(charset[fundamental_memory[0]]))))
             Logger.log("{0}: {1}".format(fundamental_memory, len(corelation)))
 
+    def retrieve(self, probe):
+        bipolar = make_bipolar(probe)
+        flat_probe = [item for sublist in bipolar for item in sublist]
+        Logger.log("retrieving probe:{0}".format(probe))
+
+        # stuff with 0's - incomplete information
+        while len(flat_probe) < len(self.neurons):
+            flat_probe.append(0)
+       
+        Logger.log("probe:{0}".format(flat_probe))
+
+        # initial state
+        counter = 0
+        y = flat_probe
+        test = []
+
+        while test != self.state_vector:
+            Logger.log("state vector:{0} is not equal to retrieval:{1}".format(unmake_bipolar(self.state_vector, len(charset[probe[0]])), unmake_bipolar(y, len(charset[probe[0]]))))
+            import random
+            r = random.randint(0, len(self.state_vector)-1)
+            self.neurons[r].retrieve(y)
+            y = self.state_vector
+            test = [neuron.test(self.state_vector) for neuron in self.neurons]
+            counter += 1
+
+        Logger.log("stable state after {1}:epochs retrieved:{0}".format(self.state_vector, counter))
+        Logger.log("stable state unbipolarized:{0}".format(unmake_bipolar(self.state_vector, len(charset[probe[0]]))))
+                
 
 ################################################################################################
 
 class Neuron:
     """ the single hopfield neuron """
 
-    def __init__(self, neuron_index, dimension):
+    def __init__(self, neuron_index, dimension, threshold):
         self.weights = [0 for i in range(dimension)]
         # initial state
         self.neuron_index = neuron_index
+        self.threshold = threshold 
+        self.state = 0
 
     def saturized_activation(self, x, y):
         """ saturized linear activation function """
@@ -162,28 +207,76 @@ class Neuron:
                 Logger.log("for weight i:{0} j:{1} - dw = {2} and weight = {3}".format(neuron_index, j, dw, self.weights[j]))
 
     def test(self, input_vector, a_function = saturized_activation):
+        """ neuron testing function """
+        #Logger.log("testing neuron:{0}".format(self.neuron_index))
         result = 0
         weighed_input = map(lambda w, x: w*x, self.weights, input_vector)
-        weighed_sum = sum(weighed_input)
+        weighed_sum = sum(weighed_input) - self.threshold
         result = a_function(self, weighed_sum, input_vector[self.neuron_index])
 
+        # Logger.log("tested:{0} from neuron:{1}".format(result, self.neuron_index))
         return result
 
+    def retrieve(self, probe, a_function = saturized_activation):
+        """ neuron testing function """
+        weighed_input = map(lambda w, x: w*x, self.weights, probe)
+        weighed_sum = sum(weighed_input) - self.threshold
+        self.state = a_function(self, weighed_sum, probe[self.neuron_index])
+
+        #Logger.log("retrieved:{0} from neuron:{1}".format(self.state, self.neuron_index))
+        return self.state
+
+
+def simple(inn, neurons, retrieve):
+    if inn == None: inn = ["1","2","3","4"]
+    if neurons == None: neurons = 3
+    hophop = HopfieldNet(neurons)
+    hophop.learn(inn)
+    hophop.test(inn)
+
+    if retrieve != None: hophop.retrieve(retrieve)
+
+def intellinet(inn, neurons, retrieve, threshold):
+    if inn == None: inn = urls
+    if neurons == None: neurons = 40
+    hophop = HopfieldNet(neurons, threshold)
+    hophop.learn(inn)
+    hophop.test(inn)
+
+    if retrieve != None: hophop.retrieve(retrieve)
+
 if __name__ == "__main__":
-    
-# ksiazkowo, koncertowo!
-    simple=["1","2","3","4"]
-    hophop = HopfieldNet(3)
-    hophop.learn(simple)
-    hophop.test(simple)
+    """ the main routine """
+    try:
+        opts, args = getopt.getopt(sys.argv[1:], "i:n:r:t:dm", ["input=", "manual", "neurons=", "retrieve=", "threshold="]) 
+    except getopt.GetoptError:           
+        sys.exit(2)                     
 
-    simple=["5","6","7","8","9"]
-    hophop = HopfieldNet(4)
-    hophop.learn(simple)
-    hophop.test(simple)
+    Logger.output("options: {0}".format(opts))
+    Logger.output("arguments: {0}".format(args))
 
-# z zadania
-#    hophop = HopfieldNet(40)
- #   hophop.learn(urls)
-  #  hophop.test(urls)
+    neurons = None
+    inn = None
+    retrieve = None
+    threshold = -1
+
+    for opt, arg in opts:                
+        if opt in ("--manual"):      
+            inn = args
+        if opt in ("-n", "--neurons"):      
+            neurons = int(arg)
+        if opt == '-d':                
+            Logger.debug = True
+        if opt in ("-r", "--retrieve"):
+            retrieve = arg
+        if opt in ("-t", "--threshold"):
+            threshold = arg
+            
+    for opt, arg in opts:                
+        if opt in ("-i", "--input"):      
+            if arg == "simple":
+                simple(inn, neurons, retrieve)
+            elif arg == "intellinet":
+                intellinet(inn, neurons, retrieve, threshold)
+             
 
