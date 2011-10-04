@@ -178,3 +178,5 @@ if __name__ == "__main__":
     for e in range(epochs):
         mlp.activate(pattern)
         mlp.backpropagate(pattern)
+
+#TODO - pickle it for testing
